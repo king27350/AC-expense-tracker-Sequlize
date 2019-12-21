@@ -1,11 +1,35 @@
 const express = require('express')
 const router = express.Router()
-
+const moment = require('moment')
 const db = require('../models')
 const Record = db.Record
 const User = db.User
 
 const { authenticated } = require('../config/auth')
+
+//filter
+router.get('/filter', authenticated, (req, res) => {
+  const month = req.query.month
+  const category = req.query.category
+  let totalAmount = 0
+
+  Record.findAll({ where: { UserId: req.user.id } }).then((record) => {
+    let records = ''
+    if (!category) {
+      records = record.filter(item => item.date.getMonth() === (Number(month) - 1))
+    } else if (!month) {
+      records = record.filter(item => item.category === category)
+    } else {
+      records = record.filter(item => item.date.getMonth() === (Number(month) - 1)).filter(item2 => item2.category === category)
+    }
+
+    for (let i = 0; i < records.length; i++) {
+      totalAmount += Number(records[i].amount)
+    }
+    res.render('index', { records, totalAmount, month, category })
+  })
+})
+
 
 // 列出全部 Record
 router.get('/', authenticated, (req, res) => {

@@ -17,7 +17,6 @@ router.get('/', authenticated, (req, res) => {
       })
     })
     .then((records) => {
-      console.log(records)
       return res.render('index', { records: records })
     })
     .catch((error) => { return res.status(422).json(error) })
