@@ -26,17 +26,13 @@ app.use((req, res, next) => {
   next()
 })
 
-
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
-// route setting
-app.get('/', (req, res) => {
-  res.send('hello world')
-})
-
-//
+// routes setting
+app.use('/', require('./routes/home'))
 app.use('/users', require('./routes/user'))
+app.use('/records', require('./routes/record'))
 
 app.listen(3000, () => {
   console.log(`App is running on port 3000 !`)
