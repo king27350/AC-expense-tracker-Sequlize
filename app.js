@@ -5,6 +5,7 @@ const passport = require('passport')
 const session = require('express-session')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
+const moment = require('moment')
 
 const db = require('./models')
 const Record = db.Record
@@ -12,6 +13,17 @@ const User = db.User
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
+
+// handlebars-helper 
+const handlebars = require("handlebars")
+handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
+  return (arg1 == arg2) ? options.fn(this) : options.inverse(this)
+})
+
+handlebars.registerHelper('formatDate', function (date) {
+  const formatDate = moment(date).format("YYYY-MM-DD")
+  return formatDate
+})
 
 app.use(session({
   secret: 'hello world',
