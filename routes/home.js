@@ -16,7 +16,10 @@ router.get('/', authenticated, (req, res) => {
         where: { UserId: req.user.id }
       })
     })
-    .then((records) => { return res.render('index', { records: records }) })
+    .then((records) => {
+      console.log(records)
+      return res.render('index', { records: records })
+    })
     .catch((error) => { return res.status(422).json(error) })
 })
 

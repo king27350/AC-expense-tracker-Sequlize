@@ -9,7 +9,7 @@ const { authenticated } = require('../config/auth')
 
 // 列出全部 Record
 router.get('/', authenticated, (req, res) => {
-  res.send('列出全部 Record')
+  return res.redirect('/')
 })
 
 // 新增一筆 Record 頁面
@@ -33,12 +33,37 @@ router.post('/', authenticated, (req, res) => {
 
 // 修改 Record 頁面
 router.get('/:id/edit', authenticated, (req, res) => {
-  res.send('修改 Record 頁面')
+  User.findByPk(req.user.id)
+    .then((user) => {
+      if (!user) throw new Error("user not found")
+      return Record.findOne({
+        where: {
+          Id: req.params.id,
+          UserId: req.user.id,
+        }
+      })
+    })
+    .then((record) => { return res.render('edit', { record: record }) })
 })
 
-// 修改 Record
+// 修改 Record 動作
 router.put('/:id', authenticated, (req, res) => {
-  res.send('修改 Record')
+  Record.findOne({
+    where: {
+      Id: req.params.id,
+      UserId: req.user.id,
+    }
+  })
+    .then((record) => {
+      record.name = req.body.name
+      record.category = req.body.category
+      record.date = req.body.date
+      record.amount = req.body.amount
+      record.store = req.body.store
+      return record.save()
+    })
+    .then((record) => { return res.redirect(`/`) })
+    .catch((error) => { return res.status(422).json(error) })
 })
 
 // 刪除 Record

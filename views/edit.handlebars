@@ -1,0 +1,47 @@
+<form action="/records/{{record.id}}?_method=PUT" method="POST">
+  <div class="container mx-auto mt-5" style="width: 600px;">
+    <div class="col-10">
+
+      <div class="d-flex justify-content-between m-3">
+        <h5>*必填欄位</h5>
+        <h5>請修改你的支出</h5>
+      </div>
+
+      <div class="d-flex justify-content-between m-3">
+        <h4>名稱* :</h4>
+        <input type="text" placeholder="name" name="name" value="{{record.name}}" style="width: 300px;" required>
+      </div>
+
+
+      <div class="d-flex justify-content-between m-3">
+        <h4>日期* :</h4>
+        <input id="date" type="date" name="date" value="{{formatDate record.date}}" style="width: 300px;" required>
+      </div>
+
+      <div class="d-flex justify-content-between m-3">
+        <h4>類別* :</h4>
+        <select name="category" style="width: 300px;" required>
+          　<option value="food" {{#ifEquals record.category "food"}} selected {{/ifEquals}}>food</option>
+          　<option value="transportation" {{#ifEquals record.category "transportation"}} selected {{/ifEquals}}>
+            transportation</option>
+          　<option value="other" {{#ifEquals record.category "other"}}selected {{/ifEquals}}>other</option>
+          　<option value="entertainment" {{#ifEquals record.category "entertainment"}}selected {{/ifEquals}}>
+            entertainment
+          </option>
+        </select>
+      </div>
+
+      <div class="d-flex justify-content-between m-3">
+        <h4>金額* :</h4>
+        <input type="number" name="amount" value="{{record.amount}}" style="width: 300px;" required>
+      </div>
+
+      <div class="d-flex justify-content-between m-3">
+        <h4>商家：</h4>
+        <input type="text" name="store" value="{{record.store}}" style="width: 300px;">
+      </div>
+
+      <button class="btn btn-primary" type="submit">修改支出</button>
+    </div>
+  </div>
+</form>
