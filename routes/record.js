@@ -26,6 +26,7 @@ router.get('/filter', authenticated, (req, res) => {
     for (let i = 0; i < records.length; i++) {
       totalAmount += Number(records[i].amount)
     }
+    req.flash('success_msg', '發大財，沒有支出')
     res.render('index', { records, totalAmount, month, category })
   })
 })

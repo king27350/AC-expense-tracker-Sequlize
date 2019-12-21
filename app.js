@@ -6,6 +6,7 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const moment = require('moment')
+const flash = require('connect-flash')
 
 const db = require('./models')
 const Record = db.Record
@@ -25,6 +26,7 @@ handlebars.registerHelper('formatDate', function (date) {
   return formatDate
 })
 
+app.use(flash())
 app.use(session({
   secret: 'hello world',
   resave: 'false',
@@ -35,6 +37,9 @@ app.use(passport.session())
 require('./config/passport')(passport)
 app.use((req, res, next) => {
   res.locals.User = req.user
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
   next()
 })
 

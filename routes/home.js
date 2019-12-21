@@ -17,7 +17,12 @@ router.get('/', authenticated, (req, res) => {
       })
     })
     .then((records) => {
-      return res.render('index', { records: records })
+      let totalAmount = 0
+      for (let i = 0; i < records.length; i++) {
+        totalAmount += Number(records[i].amount)
+      }
+      req.flash('success_msg', '發大財，沒有支出')
+      return res.render('index', { records, totalAmount })
     })
     .catch((error) => { return res.status(422).json(error) })
 })
