@@ -14,12 +14,21 @@ router.get('/', authenticated, (req, res) => {
 
 // 新增一筆 Record 頁面
 router.get('/new', authenticated, (req, res) => {
-  res.send('新增 Record 頁面')
+  return res.render('new')
 })
 
 // 新增一筆  Record 動作
 router.post('/', authenticated, (req, res) => {
-  res.send('新增一筆  Record')
+  Record.create({
+    name: req.body.name,
+    category: req.body.category,
+    amount: req.body.amount,
+    store: req.body.store,
+    date: req.body.date,
+    UserId: req.user.id
+  })
+    .then((Record) => { return res.redirect('/') })
+    .catch((error) => { return res.status(422).json(error) })
 })
 
 // 修改 Record 頁面
