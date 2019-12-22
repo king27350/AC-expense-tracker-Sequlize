@@ -12,6 +12,10 @@ const db = require('./models')
 const Record = db.Record
 const User = db.User
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
@@ -50,6 +54,7 @@ app.use(methodOverride('_method'))
 app.use('/', require('./routes/home'))
 app.use('/users', require('./routes/user'))
 app.use('/records', require('./routes/record'))
+app.use('/auth', require('./routes/auth'))
 
 app.listen(3000, () => {
   console.log(`App is running on port 3000 !`)
